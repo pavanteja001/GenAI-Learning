@@ -1,0 +1,25 @@
+from langchain_openai import ChatOpenAI
+from dotenv import load_dotenv
+from langchain_core.prompts import PromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+
+load_dotenv("../.env")
+
+prompt = PromptTemplate(
+    template="Generate 5 facts about {topic}",
+    input_variables=['topic']
+)
+
+model = ChatOpenAI(
+    model="gpt-4.1-mini",
+    temperature=0.3,
+    max_tokens = 150,
+)
+
+parser = StrOutputParser()
+
+chain = prompt | model | parser
+
+result = chain.invoke({"topic" : "cricket"})
+
+print(result)
